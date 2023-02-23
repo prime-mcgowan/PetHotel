@@ -13,6 +13,8 @@ namespace pet_hotel.Models
 
         [Required]
         public string name {get; set;}
+
+         [Required]
         public string emailAddress {get; set;}
     }
 }
