@@ -7,12 +7,13 @@ namespace pet_hotel.Models
 {
     public enum PetBreedType 
     {
-        Poodle, 
-        Beagle, 
-        Bulldog, 
-        Terrier, 
-        Boxer, 
-        Labrador, 
+        Shepherd,
+        Poodle,
+        Beagle,
+        Bulldog,
+        Terrier,
+        Boxer,
+        Labrador,
         Retriever
     }
     public enum PetColorType 
@@ -25,19 +26,19 @@ namespace pet_hotel.Models
     }
     public class Pet 
     {
-        public int id {get; set;}
-
-        public string name {get; set;}
-
+       public int id { get; set; }
+        [Required]
+        public string name { get; set; }
+        [Required]
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public PetBreedType breed {get; set;}
-
+        public PetBreedType breed { get; set; }
+        [Required]
         [JsonConverter(typeof(JsonStringEnumConverter))]
-        public PetColorType color {get; set;}
-
+        public PetColorType color { get; set; }
+        public DateTime? checkedInAt { get; set; }
+        [Required]
         [ForeignKey("petOwner")]
         public int petOwnerid { get; set; }
-
         public PetOwner petOwner { get; set; }
     }
 }

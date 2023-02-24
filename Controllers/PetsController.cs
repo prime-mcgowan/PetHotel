@@ -23,7 +23,65 @@ namespace pet_hotel.Controllers
         // occur when the route is missing in this controller
         [HttpGet]
         public IEnumerable<Pet> GetPets() {
-            return new List<Pet>();
+            return _context.Pets
+            .Include(pet => pet.petOwner); //relates to the foreign key in pets.cs 
+                                           //access to owner object 
+        }
+
+        [HttpPost]
+        public Pet Post(Pet pet) 
+        {
+            _context.Add(pet);
+            _context.SaveChanges();
+
+            return pet;
+        }
+
+        [HttpDelete("{id}")]
+        public void Delete(int id) 
+         {
+            // Find the bread, by ID
+            Pet pet = _context.Pets.Find(id);
+
+            // Tell the DB that we want to remove this bread
+            _context.Pets.Remove(pet);
+
+            // ...and save the changes to the database
+            _context.SaveChanges();
+         }
+
+      [HttpPut("{id}/checkin")]
+       public ActionResult<Pet> CheckinPet(int id)
+        {
+            Pet pet = _context.Pets.Find(id);
+            if (pet.checkedInAt == null)
+            {
+                pet.checkedInAt = DateTime.Now;
+                _context.SaveChanges();
+                return pet;
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut("{id}/checkout")]
+       public ActionResult<Pet> CheckoutPet(int id)
+        {
+            Pet pet = _context.Pets.Find(id);
+            if (pet.checkedInAt == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                pet.checkedInAt = null;
+                _context.SaveChanges();
+                return pet;
+                //SaveChanges() will caputure what you have in the line above
+                //ex. when the checkout button is clicked CHANGE checkedInAt to null
+            }
         }
 
         // [HttpGet]
